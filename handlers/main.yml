@@ -1,0 +1,14 @@
+---
+- name: update-grub
+  shell: >
+    update-grub
+  become: yes
+  when: ansible_os_family == "Debian"
+  tags: ["serial-console","skip_ansible_lint"]
+
+- name: update-grub
+  shell: >
+    grub2-mkconfig -o /boot/grub2/grub.cfg
+  become: yes
+  when: ansible_os_family == "RedHat"
+  tags: ["serial-console","skip_ansible_lint"]

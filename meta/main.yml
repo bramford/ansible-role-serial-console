@@ -1,0 +1,26 @@
+galaxy_info:
+  author: Bramford Horton
+  description: Serial console configuration
+  license: MIT
+  min_ansible_version: 2.1
+  platforms:
+    - name: Ubuntu
+      versions:
+        - precise
+        - trusty
+        - wily
+        - xenial
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+        - wheezy
+    - name: EL
+      versions:
+        - 7
+  galaxy_tags:
+    - serial
+    - console
+    - grub
+    - boot
+dependencies: []

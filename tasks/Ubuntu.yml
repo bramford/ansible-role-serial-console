@@ -1,0 +1,40 @@
+---
+- name: Configure ttyS0 init
+  template:
+    src: ttyS0.conf.j2
+    dest: "/etc/init/ttyS0.conf"
+  become: yes
+  tags: ["configuration","serial-console"]
+
+- name: Configure grub terminal for serial console
+  lineinfile:
+    dest: "/etc/default/grub"
+    state: present
+    regexp: '^\s*GRUB_TERMINAL='
+    line: 'GRUB_TERMINAL="console serial"'
+  notify: update-grub
+  become: yes
+  tags: ["configuration","serial-console"]
+
+- name: Configure grub to show boot menu
+  lineinfile:
+    dest: "/etc/default/grub"
+    state: absent
+    regexp: "{{ item }}"
+  notify: update-grub
+  become: yes
+  with_items:
+    - '^\s*GRUB_HIDDEN_TIMEOUT\='
+    - '^\s*GRUB_HIDDEN_TIMEOUT_QUIET\='
+  when: serial_console_show_grub_menu == True
+  tags: ["configuration","serial-console"]
+
+- name: Configure grub to launch console on tty0 and ttyS0
+  replace:
+    dest: "/etc/default/grub"
+  with_items:
+    - { regexp: '(^\s*GRUB_CMDLINE_LINUX="\s*.*?)(?:\s*console\=tty0\s*)*(.*"*$)', replace: '\1console=tty0 \2' }
+    - { regexp: '(^\s*GRUB_CMDLINE_LINUX="\s*.*?)(?:\s*console\=ttyS0\,115200n8\s*)*(.*"*$)', replace: '\1console=ttyS0,115200n8 \2' }
+  notify: update-grub
+  become: yes
+  tags: ["configuration","serial-console"]
