@@ -6,6 +6,8 @@ Ansible role that configures grub to provide a tty on the serial interface (ttyS
 
 ## Supported Operating Systems
 
+All GNU/Linux distros that implement GRUB2 should work, but only those that are still officially supported will be supported by this role
+
 - RHEL/CentOS 7
 - Debian 7/8
 - Debian 9 (current debian 'testing' release)

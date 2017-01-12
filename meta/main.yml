@@ -8,8 +8,8 @@ galaxy_info:
       versions:
         - precise
         - trusty
-        - wily
         - xenial
+        - yakkety
     - name: Debian
       versions:
         - jessie
