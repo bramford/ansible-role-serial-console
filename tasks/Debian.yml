@@ -9,7 +9,7 @@
   become: yes
   tags: ["configuration","serial-console"]
 
-- name: Configure grub to show boot menu
+- name: Remove GRUB_HIDDEN_TIMEOUT configurations from grub
   lineinfile:
     dest: "/etc/default/grub"
     state: absent
@@ -22,12 +22,15 @@
   when: serial_console_show_grub_menu == True
   tags: ["configuration","serial-console"]
 
-- name: Configure grub to launch console on tty0 and ttyS0
+- name: Configure grub to launch console on tty0 and ttyS0 and disable quiet
   replace:
     dest: "/etc/default/grub"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
   with_items:
-    - { regexp: '(^\s*GRUB_CMDLINE_LINUX="\s*.*?)(?:\s*console\=tty0\s*)*(.*"*$)', replace: '\1console=tty0 \2' }
-    - { regexp: '(^\s*GRUB_CMDLINE_LINUX="\s*.*?)(?:\s*console\=ttyS0\,115200n8\s*)*(.*"*$)', replace: '\1console=ttyS0,115200n8 \2' }
+    - { regexp: '(^\s*GRUB_CMDLINE_LINUX\=\"\s*.*?)(?:\s*console\=tty0\s*)*(.*\"*$)', replace: '\1console=tty0 \2' }
+    - { regexp: '(^\s*GRUB_CMDLINE_LINUX\=\"\s*.*?)(?:\s*console\=ttyS0\,115200n8\s*)*(.*\"*$)', replace: '\1console=ttyS0,115200n8 \2' }
+    - { regexp: '(^\s*GRUB_CMDLINE_LINUX(?:_DEFAULT)?\=\"\s*.*?)(?:quiet)*(.*\"*$)', replace: '\1\2' }
   notify: update-grub
   become: yes
   tags: ["configuration","serial-console"]
