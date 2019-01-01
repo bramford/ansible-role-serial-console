@@ -26,7 +26,7 @@
   with_items:
     - '^\s*GRUB_HIDDEN_TIMEOUT\='
     - '^\s*GRUB_HIDDEN_TIMEOUT_QUIET\='
-  when: serial_console_show_grub_menu == True
+  when: serial_console_show_grub_menu|bool
   tags: ["configuration","serial-console"]
 
 - name: Configure grub to launch console on tty0 and ttyS0 and disable quiet
