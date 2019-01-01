@@ -35,9 +35,12 @@
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items:
-    - { regexp: '(^\s*GRUB_CMDLINE_LINUX\=\"\s*.*?)(?:\s*console\=tty0\s*)*(.*\"*$)', replace: '\1console=tty0 \2' }
-    - { regexp: '(^\s*GRUB_CMDLINE_LINUX\=\"\s*.*?)(?:\s*console\=ttyS0\,115200n8\s*)*(.*\"*$)', replace: '\1console=ttyS0,115200n8 \2' }
-    - { regexp: '(^\s*GRUB_CMDLINE_LINUX(?:_DEFAULT)?\=\"\s*.*?)(?:quiet)*(.*\"*$)', replace: '\1\2' }
+    - regexp: '(^\s*GRUB_CMDLINE_LINUX\=\"\s*.*?)(?:\s*console\=tty0\s*)*(.*\"*$)'
+      replace: '\1console=tty0 \2'
+    - regexp: '(^\s*GRUB_CMDLINE_LINUX\=\"\s*.*?)(?:\s*console\=ttyS0\,115200n8\s*)*(.*\"*$)'
+      replace: '\1console=ttyS0,115200n8 \2'
+    - regexp: '(^\s*GRUB_CMDLINE_LINUX(?:_DEFAULT)?\=\"\s*.*?)(?:quiet)*(.*\"*$)'
+      replace: '\1\2'
   notify: update-grub
   become: yes
   tags: ["configuration","serial-console"]
